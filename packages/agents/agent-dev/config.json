@@ -1,0 +1,20 @@
+{
+  "id": "agent-dev",
+  "name": "Dev Agent",
+  "model": "",
+  "thinkingLevel": "high",
+  "mode": "build",
+  "tools": [
+    "read",
+    "grep",
+    "find",
+    "ls",
+    "write",
+    "edit",
+    "bash",
+    "skill"
+  ],
+  "skills": [
+    "write-coding-standards-from-file"
+  ]
+}

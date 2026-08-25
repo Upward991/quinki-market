@@ -1,0 +1,17 @@
+{
+  "id": "knowledge",
+  "name": "Knowledge",
+  "version": "1.0.0",
+  "author": "Quinki",
+  "description": "Your knowledge base, searchable with AI",
+  "icon": "📚",
+  "color": "#9d8bd9",
+  "category": "tab",
+  "permissions": [
+    "notes:read",
+    "notes:write",
+    "agent:ask"
+  ],
+  "entry": "bundle.js",
+  "server": "server.js"
+}

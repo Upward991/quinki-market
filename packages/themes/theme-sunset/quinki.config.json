@@ -1,0 +1,11 @@
+{
+  "id": "theme-sunset",
+  "name": "Sunset",
+  "version": "0.9.0",
+  "author": "Community",
+  "description": "Warm orange dark theme",
+  "icon": "🌅",
+  "color": "#d9a066",
+  "category": "theme",
+  "entry": "theme.json"
+}

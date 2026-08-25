@@ -1,0 +1,152 @@
+{
+  "tabs": [
+    {
+      "id": "knowledge",
+      "name": "Knowledge",
+      "version": "1.0.0",
+      "author": "Quinki",
+      "description": "Your knowledge base, searchable with AI",
+      "icon": "📚",
+      "color": "#9d8bd9",
+      "category": "tab",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/tabs/knowledge.zip",
+      "source": "quinki-market"
+    },
+    {
+      "id": "pomodoro",
+      "name": "Pomodoro",
+      "version": "1.3.0",
+      "author": "Quinki",
+      "description": "Focus timer (25 min)",
+      "icon": "🍅",
+      "color": "#d29922",
+      "category": "tab",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/tabs/pomodoro.zip",
+      "source": "quinki-market"
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-data",
+      "name": "Data Analysis",
+      "version": "0.9.0",
+      "author": "Quinki Labs",
+      "description": "Analyze data with code",
+      "icon": "📊",
+      "color": "#6bc46d",
+      "category": "skill",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/skills/skill-data.zip",
+      "source": "quinki-market"
+    },
+    {
+      "id": "skill-research",
+      "name": "Web Research",
+      "version": "1.0.0",
+      "author": "Quinki Labs",
+      "description": "Deep research with citations",
+      "icon": "🔍",
+      "color": "#7aa2f7",
+      "category": "skill",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/skills/skill-research.zip",
+      "source": "quinki-market"
+    }
+  ],
+  "agents": [
+    {
+      "id": "agent-dev",
+      "name": "Dev Agent",
+      "version": "1.1.0",
+      "author": "Quinki Labs",
+      "description": "Coding companion",
+      "icon": "💻",
+      "color": "#9d8bd9",
+      "category": "agent",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/agents/agent-dev.zip",
+      "source": "quinki-market"
+    },
+    {
+      "id": "agent-finance",
+      "name": "Finance Agent",
+      "version": "1.0.0",
+      "author": "Quinki Labs",
+      "description": "Budget and portfolio assistant",
+      "icon": "💰",
+      "color": "#6bc46d",
+      "category": "agent",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/agents/agent-finance.zip",
+      "source": "quinki-market"
+    }
+  ],
+  "mcp": [
+    {
+      "id": "mcp-github",
+      "name": "GitHub MCP",
+      "version": "2.1.0",
+      "author": "Quinki Labs",
+      "description": "Repos, issues and PRs",
+      "icon": "🔗",
+      "color": "#9d8bd9",
+      "category": "mcp",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/mcp/mcp-github.zip",
+      "source": "quinki-market"
+    },
+    {
+      "id": "mcp-notion",
+      "name": "Notion MCP",
+      "version": "1.8.0",
+      "author": "Quinki Labs",
+      "description": "Pages, databases, search",
+      "icon": "📄",
+      "color": "#585860",
+      "category": "mcp",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/mcp/mcp-notion.zip",
+      "source": "quinki-market"
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme-midnight-blue",
+      "name": "Midnight Blue",
+      "version": "1.0.0",
+      "author": "Community",
+      "description": "Deep blue dark theme",
+      "icon": "🎨",
+      "color": "#7aa2f7",
+      "category": "theme",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/themes/theme-midnight-blue.zip",
+      "source": "quinki-market"
+    },
+    {
+      "id": "theme-sunset",
+      "name": "Sunset",
+      "version": "0.9.0",
+      "author": "Community",
+      "description": "Warm orange dark theme",
+      "icon": "🌅",
+      "color": "#d9a066",
+      "category": "theme",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/themes/theme-sunset.zip",
+      "source": "quinki-market"
+    }
+  ]
+}

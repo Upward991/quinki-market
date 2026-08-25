@@ -1,0 +1,11 @@
+{
+  "id": "agent-dev",
+  "name": "Dev Agent",
+  "version": "1.1.0",
+  "author": "Quinki Labs",
+  "description": "Coding companion",
+  "icon": "💻",
+  "color": "#9d8bd9",
+  "category": "agent",
+  "entry": "config.json"
+}

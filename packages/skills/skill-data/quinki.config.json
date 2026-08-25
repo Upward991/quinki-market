@@ -1,0 +1,11 @@
+{
+  "id": "skill-data",
+  "name": "Data Analysis",
+  "version": "0.9.0",
+  "author": "Quinki Labs",
+  "description": "Analyze data with code",
+  "icon": "📊",
+  "color": "#6bc46d",
+  "category": "skill",
+  "entry": "SKILL.md"
+}

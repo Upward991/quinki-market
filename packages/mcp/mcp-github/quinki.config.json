@@ -1,0 +1,11 @@
+{
+  "id": "mcp-github",
+  "name": "GitHub MCP",
+  "version": "2.1.0",
+  "author": "Quinki Labs",
+  "description": "Repos, issues and PRs",
+  "icon": "🔗",
+  "color": "#9d8bd9",
+  "category": "mcp",
+  "entry": "server.json"
+}
