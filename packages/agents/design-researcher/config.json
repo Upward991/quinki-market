@@ -1,0 +1,28 @@
+{
+  "id": "design-researcher",
+  "name": "Web Researcher",
+  "tools": [
+    "read",
+    "bash",
+    "grep",
+    "find",
+    "ls",
+    "skill",
+    "schedule_task",
+    "getTaskStatus",
+    "getTaskResult",
+    "readHandoff",
+    "bash_readonly"
+  ],
+  "skills": [
+    "ddg-search",
+    "parallel-web-search",
+    "parallel-deep-research",
+    "find-skills",
+    "extract-design-system",
+    "searxng-search"
+  ],
+  "mcpServers": [
+    "playwright-mcp"
+  ]
+}
