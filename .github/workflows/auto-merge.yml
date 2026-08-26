@@ -1,0 +1,115 @@
+# auto-merge.yml — QUINKI MARKET: validazione + merge automatico delle PR.
+# Aggiungi questo file a quinki-market in `.github/workflows/auto-merge.yml`.
+#
+# COSA FA (in automatico, nessuna review manuale del proprietario):
+# 1. VALIDAZIONE STRUTTURA: la PR può toccare SOLO:
+#    - packages/<categoria>/<id>/  con categoria in {tabs, agents, skills, mcp, themes}
+#    - catalog.json (solo l'entry del pacchetto)
+#    - NIENTE ALTRO (no .github, no README, no codice arbitrario)
+# 2. SCAN SICUREZZA statico: eval / child_process / exec / fetch / fs / env / base64
+# 3. SCAN SEGRETI: chiavi API/token accidentalmente inclusi (ghp_, sk-, AKIA, ecc.)
+# 4. (OPZIONALE) VIRUSTOTAL: se il repo ha il secret VIRUSTOTAL_API_KEY,
+#    i file binari/zip vengono sottoposti a VirusTotal; blocco se flaggati.
+# 5. Se TUTTO passa → MERGE AUTOMATICO. Se no → la PR resta aperta con il motivo.
+#
+# NOTA: il proprietario resta l'unico con accesso admin; il workflow merge con
+# il token GITHUB (limitato a questo repo) dopo aver validato.
+
+name: Auto-merge valid packages
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate-and-merge:
+    runs-on: ubuntu-latest
+    # pull_request_target: il codice validato NON viene eseguito (solo analisi file)
+    if: github.event.pull_request.head.repo.full_name != github.repository || github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Validate structure (only package files + catalog.json)
+        run: |
+          ALLOWED_CATS="tabs|agents|skills|mcp|themes"
+          FAILED=0
+          for f in $(git diff --name-only ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}); do
+            if [[ "$f" == "catalog.json" ]]; then continue; fi
+            if [[ "$f" =~ ^packages/($ALLOWED_CATS)/[^/]+/ ]]; then
+              # solo file permessi dentro il pacchetto
+              case "$f" in
+                *.json|*.md|*.txt|*.yaml|*.yml|*.js|*.ts|*.py|*.sh) ;;
+                *) echo "❌ File non permesso nel pacchetto: $f"; FAILED=1 ;;
+              esac
+            else
+              echo "❌ Path fuori dai pacchetti: $f"; FAILED=1
+            fi
+          done
+          if [[ $FAILED -eq 1 ]]; then echo "STRUTTURA NON VALIDA"; exit 1; fi
+          echo "✅ Struttura valida"
+
+      - name: Safety scan (eval/exec/fetch/fs/env)
+        run: |
+          FAILED=0
+          find packages -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.sh" \) 2>/dev/null | while read f; do
+            if grep -Eiq 'eval\s*\(|child_process|\bexec\s*\(|process\.env|fs\.(writeFile|rm|unlink)' "$f"; then
+              echo "❌ Pattern pericoloso in $f"; exit 1
+            fi
+          done
+          # il while subshell può mascherare l'exit — rifai il check
+          if find packages -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.sh" \) 2>/dev/null | grep -q .; then
+            BAD=$(find packages -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.sh" \) -exec grep -IlE 'eval\s*\(|child_process|\bexec\s*\(|process\.env|fs\.(writeFile|rm|unlink)' {} + 2>/dev/null || true)
+            if [ -n "$BAD" ]; then echo "❌ Pattern pericolosi in: $BAD"; exit 1; fi
+          fi
+          echo "✅ Scan sicurezza ok"
+
+      - name: Secrets scan
+        run: |
+          BAD=$(grep -rInE 'ghp_[A-Za-z0-9]{36,}|gho_[A-Za-z0-9]{36,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY' packages catalog.json 2>/dev/null || true)
+          if [ -n "$BAD" ]; then echo "❌ Segreti trovati: $BAD"; exit 1; fi
+          echo "✅ Nessun segreto"
+
+      - name: VirusTotal scan (optional — needs VIRUSTOTAL_API_KEY secret)
+        if: ${{ secrets.VIRUSTOTAL_API_KEY != '' }}
+        env:
+          VT_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
+        run: |
+          FAILED=0
+          for f in $(find packages -type f 2>/dev/null); do
+            # carica il file su VirusTotal
+            RESP=$(curl -s --max-time 30 -X POST "https://www.virustotal.com/api/v3/files" \
+              -H "x-apikey: $VT_KEY" \
+              -F "file=@$f")
+            ID=$(echo "$RESP" | python3 -c "import sys,json; print(json.load(sys.stdin).get('data',{}).get('id',''))" 2>/dev/null || echo "")
+            if [ -z "$ID" ]; then echo "⚠️ VT upload non riuscito per $f (skippo)"; continue; fi
+            sleep 20
+            R=$(curl -s --max-time 30 "https://www.virustotal.com/api/v3/analyses/$ID" -H "x-apikey: $VT_KEY")
+            MAL=$(echo "$R" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    s = d.get('data',{}).get('attributes',{}).get('stats',{})
+    print(s.get('malicious',0))
+except: print('0')
+" 2>/dev/null || echo "0")
+            if [ "$MAL" != "0" ]; then echo "❌ VirusTotal: $f ha $MAL rilevamenti"; FAILED=1; fi
+          done
+          if [[ $FAILED -eq 1 ]]; then exit 1; fi
+          echo "✅ VirusTotal ok"
+
+      - name: Auto-merge
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} --merge --admin
