@@ -75,10 +75,15 @@ jobs:
           for f in $FILES; do
             [ -f "$f" ] || continue
             COUNT=$((COUNT+1))
-            RESP=$(curl -s --max-time 30 -X POST "https://www.virustotal.com/api/v3/files" -H "x-apikey: $VT_KEY" -F "file=@$f")
-            ID=$(echo "$RESP" | python3 -c "import sys,json; print(json.load(sys.stdin).get('data',{}).get('id',''))" 2>/dev/null || echo "")
+            ID=""
+            for ATTEMPT in 1 2 3; do
+              RESP=$(curl -s --max-time 30 -X POST "https://www.virustotal.com/api/v3/files" -H "x-apikey: $VT_KEY" -F "file=@$f")
+              ID=$(echo "$RESP" | python3 -c "import sys,json; print(json.load(sys.stdin).get('data',{}).get('id',''))" 2>/dev/null || echo "")
+              if [ -n "$ID" ]; then break; fi
+              sleep 8
+            done
             if [ -z "$ID" ]; then
-              echo "::error::VirusTotal upload failed for $f (check the API key / quota)"
+              echo "::error::VirusTotal upload failed for $f after retries (check the API key / quota)"
               exit 1
             fi
             sleep 15
