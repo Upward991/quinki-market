@@ -103,8 +103,13 @@
       "source": "Upward991/quinki-market"
     },
     {
+<<<<<<< HEAD
       "id": "frontend-designer",
       "name": "Frontend Designer",
+=======
+      "id": "agent-1783343015806",
+      "name": "Notion",
+>>>>>>> origin/main
       "version": "1.0.0",
       "author": "Upward991",
       "description": "",
@@ -113,7 +118,11 @@
       "category": "agent",
       "installs": 0,
       "rating": 0,
+<<<<<<< HEAD
       "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/agents/frontend-designer/",
+=======
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/agents/agent-1783343015806/",
+>>>>>>> origin/main
       "source": "Upward991/quinki-market"
     }
   ],
