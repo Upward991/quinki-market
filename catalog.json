@@ -129,6 +129,16 @@
       "rating": 0,
       "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/agents/design-researcher/",
       "source": "Upward991/quinki-market"
+    },
+    {
+      "id": "frontend-designer",
+      "name": "Frontend Designer",
+      "description": "",
+      "version": "1.0.0",
+      "author": "Upward991",
+      "category": "agent",
+      "icon": "\ud83e\udd16",
+      "color": "#9d8bd9"
     }
   ],
   "mcp": [
