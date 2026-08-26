@@ -14,6 +14,7 @@ permissions:
 jobs:
   validate-and-merge:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: github.event.pull_request.head.repo.full_name != github.repository || github.event_name == 'pull_request'
     steps:
       - name: Checkout
@@ -70,18 +71,25 @@ jobs:
             echo "::error::VIRUSTOTAL_API_KEY secret is not set in the repo settings"
             exit 1
           fi
+          FILES=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" || git diff --name-only HEAD^ HEAD 2>/dev/null || true)
           FAILED=0
-          for f in $(find packages -type f 2>/dev/null); do
+          COUNT=0
+          for f in $FILES; do
+            [ -f "$f" ] || continue
+            COUNT=$((COUNT+1))
             RESP=$(curl -s --max-time 30 -X POST "https://www.virustotal.com/api/v3/files" -H "x-apikey: $VT_KEY" -F "file=@$f")
             ID=$(echo "$RESP" | python3 -c "import sys,json; print(json.load(sys.stdin).get('data',{}).get('id',''))" 2>/dev/null || echo "")
-            if [ -z "$ID" ]; then echo "VT upload failed for $f (skip)"; continue; fi
-            sleep 20
+            if [ -z "$ID" ]; then
+              echo "::error::VirusTotal upload failed for $f (check the API key / quota)"
+              exit 1
+            fi
+            sleep 15
             R=$(curl -s --max-time 30 "https://www.virustotal.com/api/v3/analyses/$ID" -H "x-apikey: $VT_KEY")
             MAL=$(echo "$R" | python3 -c "import sys,json; d=json.load(sys.stdin); s=d.get('data',{}).get('attributes',{}).get('stats',{}); print(s.get('malicious',0))" 2>/dev/null || echo "0")
             if [ "$MAL" != "0" ]; then echo "VirusTotal: $f has $MAL detections"; FAILED=1; fi
           done
           if [ "$FAILED" = "1" ]; then echo "::error::VirusTotal found threats"; exit 1; fi
-          echo "VirusTotal ok"
+          echo "VirusTotal ok ($COUNT files)" 
 
       - name: Auto-merge
         if: success()
