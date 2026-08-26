@@ -74,6 +74,11 @@ jobs:
           COUNT=0
           for f in $FILES; do
             [ -f "$f" ] || continue
+            # VirusTotal serve per CONTENUTI ESECUTIBILI/binari: i file testo
+            # (.md/.json/...) sono già coperti dallo scan statico + segreti.
+            case "$f" in
+              *.md|*.json|*.txt|*.yml|*.yaml|*.html|*.css|*.csv) echo "SKIP text: $f"; continue ;;
+            esac
             COUNT=$((COUNT+1))
             ID=""
             for ATTEMPT in 1 2 3; do
