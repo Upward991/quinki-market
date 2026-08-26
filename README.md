@@ -51,3 +51,4 @@ Every package has a `quinki.config.json` manifest:
 ## License
 
 Each package is the property of its author (see `author` in the manifest).
+test
