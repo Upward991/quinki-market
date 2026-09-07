@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "GitHub MCP": {
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "Notion MCP": {
+      "url": "https://mcp.notion.com/mcp"
+    }
+  }
+}
