@@ -1,0 +1,1 @@
+{"id":"market-test-agent","name":"Market Test Agent","desc":"Agent da test market","model":"","thinkingLevel":"medium","mode":"build","tools":["read","grep","find","ls"]}
