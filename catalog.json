@@ -7,7 +7,7 @@
       "version": "1.0.0",
       "author": "Upward991",
       "description": "",
-      "icon": "ð¦",
+      "icon": "Ã°ÂÂÂ¦",
       "color": "#888",
       "license": "MIT",
       "category": "tab",
@@ -24,7 +24,7 @@
       "version": "1.0.0",
       "author": "Upward991",
       "description": "",
-      "icon": "ÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂ¦",
+      "icon": "ÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¦",
       "color": "#888",
       "license": "MIT",
       "category": "agent",
@@ -39,7 +39,7 @@
       "version": "1.0.0",
       "author": "Upward991",
       "description": "",
-      "icon": "ÃÂ°ÃÂÃÂÃÂ¦",
+      "icon": "ÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂ¦",
       "color": "#888",
       "license": "MIT",
       "category": "agent",
@@ -49,23 +49,7 @@
       "source": "Upward991/quinki-market"
     }
   ],
-  "skills": [
-    {
-      "id": "skill-di-test-upload",
-      "name": "skill-di-test-upload",
-      "version": "1.0.0",
-      "author": "Upward991",
-      "description": "Skill creata internamente per testare l uploader del publish.",
-      "icon": "ÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂ¦",
-      "color": "#888",
-      "license": "MIT",
-      "category": "skill",
-      "installs": 0,
-      "rating": 0,
-      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/skills/skill-di-test-upload/",
-      "source": "Upward991/quinki-market"
-    }
-  ],
+  "skills": [],
   "themes": [
     {
       "id": "test-theme-finto",
@@ -73,7 +57,7 @@
       "version": "1.0.1",
       "author": "Upward991",
       "description": "",
-      "icon": "📦",
+      "icon": "ð¦",
       "color": "#888",
       "license": "MIT",
       "category": "theme",
