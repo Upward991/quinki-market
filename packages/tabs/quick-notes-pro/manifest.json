@@ -1,0 +1,10 @@
+{
+  "id": "quick-notes-pro",
+  "name": "Quick Notes Pro",
+  "version": "1.0.0",
+  "author": "Upward991",
+  "description": "A fast notes tab with local persistence",
+  "license": "MIT",
+  "category": "tab",
+  "permissions": []
+}

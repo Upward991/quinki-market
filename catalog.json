@@ -1,6 +1,22 @@
 {
   "mcp": [],
-  "tabs": [],
+  "tabs": [
+    {
+      "id": "quick-notes-pro",
+      "name": "Quick Notes Pro",
+      "version": "1.0.0",
+      "author": "Upward991",
+      "description": "",
+      "icon": "📦",
+      "color": "#888",
+      "license": "MIT",
+      "category": "tab",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/tabs/quick-notes-pro/",
+      "source": "Upward991/quinki-market"
+    }
+  ],
   "agents": [
     {
       "id": "design-researcher",
@@ -57,7 +73,7 @@
       "version": "1.0.0",
       "author": "Upward991",
       "description": "",
-      "icon": "📦",
+      "icon": "ð¦",
       "color": "#888",
       "license": "MIT",
       "category": "theme",
