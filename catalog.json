@@ -1,6 +1,23 @@
 {
+  "mcp": [],
   "tabs": [],
-  "agents": [],
+  "agents": [
+    {
+      "id": "design-researcher",
+      "name": "Web Researcher",
+      "version": "1.0.0",
+      "author": "Upward991",
+      "description": "",
+      "icon": "\ud83d\udce6",
+      "color": "#888",
+      "license": "MIT",
+      "category": "agent",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/agents/design-researcher/",
+      "source": "Upward991/quinki-market"
+    }
+  ],
   "skills": [
     {
       "id": "skill-di-test-upload",
@@ -8,7 +25,7 @@
       "version": "1.0.0",
       "author": "Upward991",
       "description": "Skill creata internamente per testare l uploader del publish.",
-      "icon": "📦",
+      "icon": "\ud83d\udce6",
       "color": "#888",
       "license": "MIT",
       "category": "skill",
@@ -18,6 +35,5 @@
       "source": "Upward991/quinki-market"
     }
   ],
-  "mcp": [],
   "themes": []
 }

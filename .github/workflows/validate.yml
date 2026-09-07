@@ -1,0 +1,100 @@
+name: Market validation + auto-merge
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  structure:
+    name: Structure check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Validate catalog.json + packages
+        run: |
+          set -e
+          echo "== catalog.json =="
+          python3 - << 'PY'
+          import json, sys, os, glob
+          if not os.path.exists('catalog.json'):
+              print('catalog.json missing — first publish must include it'); sys.exit(0)
+          cat = json.load(open('catalog.json'))
+          assert isinstance(cat, dict), 'catalog.json must be an object'
+          allowed = {'tabs','agents','skills','mcp','themes'}
+          for k, v in cat.items():
+              assert k in allowed, f'unknown category {k}'
+              assert isinstance(v, list), f'{k} must be a list'
+          ids = {}
+          for cat_key, items in cat.items():
+              for it in items:
+                  assert isinstance(it, dict), 'item must be object'
+                  for f in ('id','name','category'):
+                      assert f in it and it[f], f'item missing {f}'
+                  key = cat_key + ':' + it['id']
+                  assert key not in ids, f'duplicate id {it["id"]}'
+                  ids[key] = True
+          print('catalog.json OK (' + str(len(ids)) + ' items)')
+          PY
+          echo "== packages/ =="
+          for m in $(find packages -name manifest.json 2>/dev/null); do
+            python3 - "$m" << 'PY'
+          import json, sys
+          p = sys.argv[1]
+          m = json.load(open(p))
+          for f in ('id','name','category','license'):
+              assert f in m and m[f], f'{p}: missing {f}'
+          assert m['license'] in ('MIT','Apache-2.0','CC0-1.0','CC BY 4.0'), f'{p}: invalid license'
+          print('OK', p)
+          PY
+          done
+
+  secrets-scan:
+    name: Secret detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Scan the PR diff for secrets
+        run: |
+          set -e
+          PATTERNS='ghp_[A-Za-z0-9]\{36,\}|gho_[A-Za-z0-9]\{36,\}|github_pat_[A-Za-z0-9_]\{22,\}|sk-or-v1-[a-f0-9]\{48,\}|sk-[A-Za-z0-9]\{20,\}|AKIA[0-9A-Z]\{16\}|BEGIN\(RSA\|EC\|OPENSSH\) PRIVATE KEY|xoxb-[0-9A-Za-z]\{10,\}'
+          if git diff --unified=0 origin/main...HEAD 2>/dev/null | grep -En "$PATTERNS" | grep -v '^\+\+\+' ; then
+            echo "::error::Secrets detected in the diff — publish rejected"; exit 1
+          else
+            echo "No secrets detected"; fi
+
+  binaries:
+    name: Binary policy (VirusTotal pending key)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: No binaries allowed until VT key is configured
+        run: |
+          BIN=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -Ei '\.(zip|tar|gz|dylib|so|exe|dll|bin|app|dmg)$' || true)
+          if [ -n "$BIN" ]; then
+            echo "::error::Binary files are rejected until VirusTotal integration is configured:"; echo "$BIN"; exit 1
+          fi
+          echo "No binaries — OK"
+
+  auto-merge:
+    name: Auto-merge when green
+    needs: [structure, secrets-scan, binaries]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge the PR
+        run: |
+          set -e
+          PR="${{ github.event.pull_request.number }}"
+          echo "All checks green — merging PR #$PR"
+          curl -s -X PUT \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/$PR/merge" \
+            -d '{"merge_method":"squash"}' | head -c 300; echo
