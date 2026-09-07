@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "author": "Upward991",
       "description": "",
-      "icon": "📦",
+      "icon": "ð¦",
       "color": "#888",
       "license": "MIT",
       "category": "agent",
@@ -25,7 +25,7 @@
       "version": "1.0.0",
       "author": "Upward991",
       "description": "Skill creata internamente per testare l uploader del publish.",
-      "icon": "📦",
+      "icon": "ð¦",
       "color": "#888",
       "license": "MIT",
       "category": "skill",
@@ -35,5 +35,21 @@
       "source": "Upward991/quinki-market"
     }
   ],
-  "themes": []
+  "themes": [
+    {
+      "id": "test-theme-finto",
+      "name": "Test Theme Finto",
+      "version": "1.0.0",
+      "author": "Upward991",
+      "description": "",
+      "icon": "📦",
+      "color": "#888",
+      "license": "MIT",
+      "category": "theme",
+      "installs": 0,
+      "rating": 0,
+      "downloadUrl": "https://raw.githubusercontent.com/Upward991/quinki-market/main/packages/themes/test-theme-finto/",
+      "source": "Upward991/quinki-market"
+    }
+  ]
 }
